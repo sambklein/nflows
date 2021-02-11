@@ -155,7 +155,7 @@ def rational_quadratic_spline(
         logabsdet = torch.log(derivative_numerator) - 2 * torch.log(denominator)
         
         if tail_bound:
-            output = (2 * tail_bound * output) - tail_bound
+            outputs = (2 * tail_bound * outputs) - tail_bound
 
         return outputs, -logabsdet
     else:
