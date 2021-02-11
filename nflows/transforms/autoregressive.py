@@ -343,7 +343,7 @@ class MaskedPiecewiseRationalQuadraticAutoregressiveTransform(AutoregressiveTran
         context_features=None,
         num_bins=10,
         tails=None,
-        tail_bound=1.0,
+        tail_bound=None,
         num_blocks=2,
         use_residual_blocks=True,
         random_mask=False,
@@ -401,8 +401,10 @@ class MaskedPiecewiseRationalQuadraticAutoregressiveTransform(AutoregressiveTran
 
         if self.tails is None:
             spline_fn = rational_quadratic_spline
-            spline_kwargs = {}
+            spline_kwargs = {"tail_bound": self.tail_bound}
         elif self.tails == "linear":
+            if self.tail_bound is None:
+                self.tail_bound = 1
             spline_fn = unconstrained_rational_quadratic_spline
             spline_kwargs = {"tails": self.tails, "tail_bound": self.tail_bound}
         else:
