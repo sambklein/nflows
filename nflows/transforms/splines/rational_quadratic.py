@@ -67,6 +67,7 @@ def rational_quadratic_spline(
     unnormalized_heights,
     unnormalized_derivatives,
     inverse=False,
+    tail_bound=None,
     left=0.0,
     right=1.0,
     bottom=0.0,
@@ -75,6 +76,9 @@ def rational_quadratic_spline(
     min_bin_height=DEFAULT_MIN_BIN_HEIGHT,
     min_derivative=DEFAULT_MIN_DERIVATIVE,
 ):
+    if tail_bound and not inverse:
+        inputs = (inputs + tail_bound)/(2 * tail_bound)
+        
     if torch.min(inputs) < left or torch.max(inputs) > right:
         raise InputOutsideDomain()
 
@@ -149,6 +153,9 @@ def rational_quadratic_spline(
             + input_derivatives * (1 - root).pow(2)
         )
         logabsdet = torch.log(derivative_numerator) - 2 * torch.log(denominator)
+        
+        if tail_bound:
+            output = (2 * tail_bound * output) - tail_bound
 
         return outputs, -logabsdet
     else:
