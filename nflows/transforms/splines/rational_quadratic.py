@@ -164,7 +164,7 @@ def rational_quadratic_spline(
         else:
             log_det_contr = 0
 
-        return outputs, -logabsdet + log_det_contr
+        return outputs, -logabsdet + log_det_contr[0]
     else:
         
         theta = (inputs - input_cumwidths) / input_bin_widths
@@ -186,4 +186,4 @@ def rational_quadratic_spline(
         )
         logabsdet = torch.log(derivative_numerator) - 2 * torch.log(denominator)
 
-        return outputs, logabsdet + log_det_contr
+        return outputs, logabsdet + log_det_contr[0]
