@@ -79,6 +79,10 @@ def rational_quadratic_spline(
 ):
     if tail_bound:
         shift_op = PointwiseAffineTransform(tail_bound, 1/(2 * tail_bound))
+        if not inverse:
+            inputs, log_det_contr = shift_op.forward(inputs)
+        else:
+            log_det_contr = 0
         
     if torch.min(inputs) < left or torch.max(inputs) > right:
         raise InputOutsideDomain()
@@ -162,11 +166,6 @@ def rational_quadratic_spline(
 
         return outputs, -logabsdet + log_det_contr
     else:
-        
-        if tail_bound:
-            inputs, log_det_contr = shift_op.forward(inputs)
-        else:
-            log_det_contr = 0
         
         theta = (inputs - input_cumwidths) / input_bin_widths
         theta_one_minus_theta = theta * (1 - theta)
