@@ -78,7 +78,7 @@ def rational_quadratic_spline(
     min_derivative=DEFAULT_MIN_DERIVATIVE,
 ):
     if tail_bound:
-        shift_op = PointwiseAffineTransform(tail_bound, 1/(2 * tail_bound))
+        shift_op = PointwiseAffineTransform(tail_bound, 1/2)
         if not inverse:
             inputs, log_det_contr = shift_op.forward(inputs)
         else:
